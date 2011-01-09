@@ -39,18 +39,18 @@ class Devise::SessionsController < ApplicationController
 
 
   def create
-    build_resource
+    #build_resource
     
     puts "LEGOOOOOOOOOOOOOOOOOO"
         
-    if resource = authenticate!(resource_name)
+    if resource = warden.authenticate!(:scope => resource_name)
       set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource, true)
-    elsif [:custom, :redirect].include?(warden.result)
-      throw :warden, :scope => resource_name
+    # elsif [:custom, :redirect].include?(warden.result)
+    #   throw :warden, :scope => resource_name
     else
       set_now_flash_message :alert, (warden.message || :invalid)
-      clean_up_passwords(build_resource)
+      # clean_up_passwords(build_resource)
       respond_to do |format|
         format.html { render_with_scope :new }
         format.json { render :json => {:success => false, :status => warden.message}}
