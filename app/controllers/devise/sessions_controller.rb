@@ -31,17 +31,19 @@ class Devise::SessionsController < ApplicationController
   # WITH JSON RESPONSE
 
   # POST /resource/sign_in
-  # def create
-  #   resource = warden.authenticate!(:scope => resource_name, :recall => "new")
-  #   set_flash_message :notice, :signed_in
-  #   sign_in_and_redirect(resource_name, resource, true)
-  # end
+  def create
+    resource = warden.authenticate!(:scope => resource_name, :recall => "new")
+    set_flash_message :notice, :signed_in
+    sign_in_and_redirect(resource_name, resource)
+  end
 
 
   def create
     build_resource
+    
+    puts "LEGOOOOOOOOOOOOOOOOOO"
         
-    if resource = warden.authenticate!(:scope => resource_name, :recall => "new")
+    if resource = authenticate!(resource_name)
       set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource, true)
     elsif [:custom, :redirect].include?(warden.result)
