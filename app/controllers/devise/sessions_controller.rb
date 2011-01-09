@@ -18,11 +18,11 @@ class Devise::SessionsController < ApplicationController
 
   # GET /resource/sign_in
   def new
-    unless flash[:notice].present?
-      Devise::FLASH_MESSAGES.each do |message|
-        set_now_flash_message :alert, message if params.try(:[], message) == "true"
-      end
-    end
+    # unless flash[:notice].present?
+    #   Devise::FLASH_MESSAGES.each do |message|
+    #     set_now_flash_message :alert, message if params.try(:[], message) == "true"
+    #   end
+    # end
 
     build_resource
     render_with_scope :new
