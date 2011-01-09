@@ -1,4 +1,4 @@
-class Device::SessionsController < ApplicationController
+class Devise::SessionsController < ApplicationController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
   include Devise::Controllers::InternalHelpers
   
