@@ -40,8 +40,8 @@ class Devise::RegistrationsController < ApplicationController
       clean_up_passwords(resource)
       respond_to do |format|
         format.html { render_with_scope :new }
-        format.json { render :json => {:success => false, 
-          :error => resource.errors, :status => :unprocessable_entity}}
+        format.json { render :json => {:result => :ko, 
+          :errors => resource.errors, :status => :unprocessable_entity}}
       end
 
     end
