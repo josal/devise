@@ -2,19 +2,6 @@ class Devise::SessionsController < ApplicationController
   prepend_before_filter :require_no_authentication, :only => [ :new, :create ]
   include Devise::Controllers::InternalHelpers
   
-    
-  
-  # WITH JSON RESPONSE       
-  def sign_in_and_redirect(resource_or_scope, resource=nil, skip=false)
-    scope      = Devise::Mapping.find_scope!(resource_or_scope)
-    resource ||= resource_or_scope
-    sign_in(scope, resource) unless skip
-    respond_to do |format|
-      format.html {redirect_to stored_location_for(scope) || after_sign_in_path_for(resource) }
-      format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
-    end
-  end
-  
   # GET /resource/sign_in
   # def new
   #   clean_up_passwords(build_resource)
@@ -41,13 +28,9 @@ class Devise::SessionsController < ApplicationController
   # end
 
   def create
-    #build_resource
-    
-    puts "LEGOOOOOOOOOOOOOOOOOO"
-        
     if resource = warden.authenticate!(:scope => resource_name)
       set_flash_message :notice, :signed_in
-      sign_in_and_redirect(resource_name, resource, true)
+      sign_in_and_redirect(resource_name, resource)
     # elsif [:custom, :redirect].include?(warden.result)
     #   throw :warden, :scope => resource_name
     else
@@ -55,7 +38,7 @@ class Devise::SessionsController < ApplicationController
       clean_up_passwords(build_resource)
       respond_to do |format|
         format.html { render_with_scope :new }
-        format.json { render :json => {:success => false, :status => warden.message}}
+        format.json { render :json => {:result => :ko, :status => warden.message}}
       end
     end
   end  

@@ -3,33 +3,41 @@ class Devise::RegistrationsController < ApplicationController
   prepend_before_filter :authenticate_scope!, :only => [:edit, :update, :destroy]
   include Devise::Controllers::InternalHelpers
   
-  # WITH JSON RESPONSE       
-  def sign_in_and_redirect(resource_or_scope, resource=nil, skip=false)
-    scope      = Devise::Mapping.find_scope!(resource_or_scope)
-    resource ||= resource_or_scope
-    sign_in(scope, resource) unless skip
-    respond_to do |format|
-      format.html {redirect_to stored_location_for(scope) || after_sign_in_path_for(resource) }
-      format.json { render :json => { :success => true, :session_id => request.session_options[:id], :current_user => current_user} }
-    end
-  end
-  
-  # GET /resource/sign_in
+  # GET /resource/sign_up
   def new
-    build_resource
+    build_resource({})
     render_with_scope :new
   end
 
+  # POST /resource/
+  # def create
+  #   build_resource
+  # 
+  #   if resource.save
+  #     if resource.active?
+  #       set_flash_message :notice, :signed_up
+  #       sign_in_and_redirect(resource_name, resource)
+  #     else
+  #       set_flash_message :notice, :inactive_signed_up, :reason => resource.inactive_message.to_s
+  #       expire_session_data_after_sign_in!
+  #       redirect_to after_inactive_sign_up_path_for(resource)
+  #     end
+  #   else
+  #     clean_up_passwords(resource)
+  #     render_with_scope :new
+  #   end
+  # end
+
+  # 
   # WITH JSON RESPONSE
   def create
     build_resource
-
-    puts "LEGOOOOOOOOOOOOOOOOOO"
-    
+  
     if resource.save
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)
     else
+      clean_up_passwords(resource)
       respond_to do |format|
         format.html { render_with_scope :new }
         format.json { render :json => {:success => false, 
