@@ -15,8 +15,12 @@ class Devise::SessionsController < ApplicationController
     end
   end
   
-
   # GET /resource/sign_in
+  # def new
+  #   clean_up_passwords(build_resource)
+  #   render_with_scope :new
+  # end
+  
   def new
     # unless flash[:notice].present?
     #   Devise::FLASH_MESSAGES.each do |message|
@@ -24,11 +28,10 @@ class Devise::SessionsController < ApplicationController
     #   end
     # end
 
-    build_resource
+    clean_up_passwords(build_resource)
     render_with_scope :new
   end
 
-  # WITH JSON RESPONSE
 
   # POST /resource/sign_in
   # def create
@@ -36,7 +39,6 @@ class Devise::SessionsController < ApplicationController
   #   set_flash_message :notice, :signed_in
   #   sign_in_and_redirect(resource_name, resource)
   # end
-
 
   def create
     #build_resource
@@ -50,7 +52,7 @@ class Devise::SessionsController < ApplicationController
     #   throw :warden, :scope => resource_name
     else
       set_now_flash_message :alert, (warden.message || :invalid)
-      # clean_up_passwords(build_resource)
+      clean_up_passwords(build_resource)
       respond_to do |format|
         format.html { render_with_scope :new }
         format.json { render :json => {:success => false, :status => warden.message}}
