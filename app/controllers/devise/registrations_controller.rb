@@ -10,17 +10,37 @@ class Devise::RegistrationsController < ApplicationController
   end
 
   # POST /resource/sign_up
+  # def create
+  #   build_resource
+  # 
+  #   if resource.save
+  #     set_flash_message :notice, :signed_up
+  #     sign_in_and_redirect(resource_name, resource)
+  #   else
+  #     clean_up_passwords(resource)
+  #     render_with_scope :new
+  #   end
+  # end
+
+  # WITH JSON RESPONSE
   def create
     build_resource
-
+  
     if resource.save
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)
     else
       clean_up_passwords(resource)
-      render_with_scope :new
+      respond_to do |format|
+        format.html { render_with_scope :new }
+        format.json { render :json => {:result => :ko, 
+          :errors => resource.errors, :status => :unprocessable_entity}}
+      end
+
     end
   end
+
+
 
   # GET /resource/edit
   def edit

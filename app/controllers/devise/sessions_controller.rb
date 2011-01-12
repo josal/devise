@@ -9,11 +9,25 @@ class Devise::SessionsController < ApplicationController
   end
 
   # POST /resource/sign_in
+  # def create
+  #   resource = warden.authenticate!(:scope => resource_name, :recall => "new")
+  #   set_flash_message :notice, :signed_in
+  #   sign_in_and_redirect(resource_name, resource)
+  # end
+  
   def create
-    resource = warden.authenticate!(:scope => resource_name, :recall => "new")
-    set_flash_message :notice, :signed_in
-    sign_in_and_redirect(resource_name, resource)
-  end
+    if resource = warden.authenticate!(:scope => resource_name)
+      set_flash_message :notice, :signed_in
+      sign_in_and_redirect(resource_name, resource)
+    else
+      set_now_flash_message :alert, (warden.message || :invalid)
+      clean_up_passwords(build_resource)
+      respond_to do |format|
+        format.html { render_with_scope :new }
+        format.json { render :json => {:result => :ko, :status => warden.message}}
+      end
+    end
+  end  
 
   # GET /resource/sign_out
   def destroy

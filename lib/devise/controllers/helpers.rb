@@ -163,11 +163,21 @@ module Devise
       #
       # If just a symbol is given, consider that the user was already signed in
       # through other means and just perform the redirection.
+      # def sign_in_and_redirect(resource_or_scope, resource=nil)
+      #   scope      = Devise::Mapping.find_scope!(resource_or_scope)
+      #   resource ||= resource_or_scope
+      #   sign_in(scope, resource) unless warden.user(scope) == resource
+      #   redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
+      # end
       def sign_in_and_redirect(resource_or_scope, resource=nil)
         scope      = Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
         sign_in(scope, resource) unless warden.user(scope) == resource
-        redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
+        respond_to do |format|
+          format.html { redirect_to stored_location_for(scope) || after_sign_in_path_for(resource) }
+          format.json { render :json => { :result => :ok } }
+          #format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
+        end
       end
 
       # Sign out an user and tries to redirect to the url specified by
