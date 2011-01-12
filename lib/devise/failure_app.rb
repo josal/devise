@@ -73,7 +73,9 @@ module Devise
 
     def http_auth_body
       method = :"to_#{request.format.to_sym}"
-      {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
+      # cambiado
+      # {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message      
+      {}.respond_to?(method) ? { :errors => i18n_message }.send(method) : i18n_message
     end
 
     def recall_controller

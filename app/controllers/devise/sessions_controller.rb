@@ -15,6 +15,7 @@ class Devise::SessionsController < ApplicationController
   #   sign_in_and_redirect(resource_name, resource)
   # end
   
+  # cambiado
   def create
     if resource = warden.authenticate!(:scope => resource_name)
       set_flash_message :notice, :signed_in
@@ -24,7 +25,7 @@ class Devise::SessionsController < ApplicationController
       clean_up_passwords(build_resource)
       respond_to do |format|
         format.html { render_with_scope :new }
-        format.json { render :json => {:result => :ko, :status => warden.message}}
+        format.json { render :json => {:result => :ko, :errors => warden.message}}
       end
     end
   end  

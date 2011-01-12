@@ -22,7 +22,7 @@ class Devise::RegistrationsController < ApplicationController
   #   end
   # end
 
-  # WITH JSON RESPONSE
+  # cambiado
   def create
     build_resource
   
@@ -33,8 +33,7 @@ class Devise::RegistrationsController < ApplicationController
       clean_up_passwords(resource)
       respond_to do |format|
         format.html { render_with_scope :new }
-        format.json { render :json => {:result => :ko, 
-          :errors => resource.errors, :status => :unprocessable_entity}}
+        format.json { render :json => {:result => :ko, :errors => resource.errors}}
       end
 
     end
