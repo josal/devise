@@ -18,7 +18,7 @@ class Devise::SessionsController < ApplicationController
   # cambiado
   def create
     if resource = warden.authenticate!(:scope => resource_name)
-      set_flash_message :success, :signed_in
+      set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource)
     else
       set_now_flash_message :alert, (warden.message || :invalid)
