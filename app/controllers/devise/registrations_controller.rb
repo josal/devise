@@ -27,7 +27,7 @@ class Devise::RegistrationsController < ApplicationController
     build_resource
   
     if resource.save
-      set_flash_message :notice, :signed_up
+      set_flash_message :success, :signed_up
       sign_in_and_redirect(resource_name, resource)
     else
       clean_up_passwords(resource)
@@ -49,7 +49,7 @@ class Devise::RegistrationsController < ApplicationController
   # PUT /resource
   def update
     if resource.update_with_password(params[resource_name])
-      set_flash_message :notice, :updated
+      set_flash_message :success, :updated
       redirect_to after_update_path_for(resource)
     else
       clean_up_passwords(resource)
