@@ -71,6 +71,7 @@ class Devise::RegistrationsController < ApplicationController
         format.html { render_with_scope :edit }
         format.json { render :json => {:result => :ko, :errors => resource.errors}}
       end
+    end
   end
 
   # DELETE /resource
