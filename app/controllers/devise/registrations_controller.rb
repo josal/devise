@@ -46,15 +46,31 @@ class Devise::RegistrationsController < ApplicationController
     render_with_scope :edit
   end
 
-  # PUT /resource
+  # # PUT /resource
+  # def update
+  #   if resource.update_with_password(params[resource_name])
+  #     set_flash_message :notice, :updated
+  #     redirect_to after_update_path_for(resource)
+  #   else
+  #     clean_up_passwords(resource)
+  #     render_with_scope :edit
+  #   end
+  # end
+  
+  # cambiado
   def update
     if resource.update_with_password(params[resource_name])
       set_flash_message :notice, :updated
-      redirect_to after_update_path_for(resource)
+      respond_to do |format|
+        format.html { redirect_to after_update_path_for(resource) }
+        format.json { render :json => { :result => :ok } }
+      end
     else
       clean_up_passwords(resource)
-      render_with_scope :edit
-    end
+      respond_to do |format|
+        format.html { render_with_scope :edit }
+        format.json { render :json => {:result => :ko, :errors => resource.errors}}
+      end
   end
 
   # DELETE /resource
