@@ -25,7 +25,7 @@ class Devise::SessionsController < ApplicationController
       clean_up_passwords(build_resource)
       respond_to do |format|
         format.html { render_with_scope :new }
-        format.json { render :json => {:result => :ko, :errors => warden.message}}
+        format.json { render :json => {:result => :ko, :errors => create_errors_msg}}
       end
     end
   end  
@@ -34,5 +34,11 @@ class Devise::SessionsController < ApplicationController
   def destroy
     set_flash_message :notice, :signed_out if signed_in?(resource_name)
     sign_out_and_redirect(resource_name)
+  end
+  
+  def create_errors_msg
+    if warden.message.is_a?(String)
+      {:reason => warden.message}
+    end
   end
 end
