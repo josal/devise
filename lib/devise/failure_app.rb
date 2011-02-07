@@ -74,9 +74,14 @@ module Devise
     def http_auth_body
       method = :"to_#{request.format.to_sym}"
       # cambiado
-      # {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message      
-      {}.respond_to?(method) ? { :errors => i18n_message }.send(method) : i18n_message
+      # {}.respond_to?(method) ? { :error => i18n_message }.send(method) : i18n_message
+      if params[:token].present?
+        {}.respond_to?(method) ? { :errors => {:reason => i18n_message} }.send(method) : i18n_message
+      else
+        {}.respond_to?(method) ? { :errors => i18n_message }.send(method) : i18n_message
+      end
     end
+
 
     def recall_controller
       "#{params[:controller].camelize}Controller".constantize
