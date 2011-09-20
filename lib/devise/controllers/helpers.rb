@@ -169,14 +169,17 @@ module Devise
       #   sign_in(scope, resource) unless warden.user(scope) == resource
       #   redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
       # end
-      
+
       # cambiado
       def sign_in_and_redirect(resource_or_scope, resource=nil)
         scope      = Devise::Mapping.find_scope!(resource_or_scope)
         resource ||= resource_or_scope
-        sign_in(scope, resource) unless warden.user(scope) == resource
         respond_to do |format|
-          format.html { redirect_to stored_location_for(scope) || after_sign_in_path_for(resource) }
+          format.html {
+            # solo se loga si es por web, por api no
+            sign_in(scope, resource) unless warden.user(scope) == resource
+            redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
+          }
           format.json { render :json => { :result => :ok } }
           #format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
         end
