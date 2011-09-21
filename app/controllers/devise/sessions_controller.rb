@@ -14,9 +14,10 @@ class Devise::SessionsController < ApplicationController
   #   set_flash_message :notice, :signed_in
   #   sign_in_and_redirect(resource_name, resource)
   # end
-  
+
   # cambiado
   def create
+    puts "vasdgasdgasdgasgsd***************************"
     if resource = warden.authenticate!(:scope => resource_name)
       set_flash_message :notice, :signed_in
       sign_in_and_redirect(resource_name, resource)
@@ -28,7 +29,7 @@ class Devise::SessionsController < ApplicationController
         format.json { render :json => {:result => :ko, :errors => warden.message}}
       end
     end
-  end  
+  end
 
   # GET /resource/sign_out
   def destroy
