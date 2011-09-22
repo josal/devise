@@ -25,7 +25,6 @@ class Devise::RegistrationsController < ApplicationController
   # cambiado
   def create
     build_resource
-    puts "aaaaaaaaaaaaaale 1**********************"
     if resource.save
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)
@@ -59,13 +58,11 @@ class Devise::RegistrationsController < ApplicationController
 
   # cambiado
   def update
-    puts "vvvvvvvvvvvvvvvvvvvvvvv***********************"
     if resource.update_with_password(params[resource_name])
       set_flash_message :notice, :updated
       respond_to do |format|
         format.html { redirect_to after_update_path_for(resource) }
         format.json {
-          puts "aquiiiiiiiiiiiiiiiiiiiiiiiiii1****************"
           sign_out(resource)
           render :json => { :result => :ok }
         }
@@ -75,9 +72,6 @@ class Devise::RegistrationsController < ApplicationController
       respond_to do |format|
         format.html { render_with_scope :edit }
         format.json {
-          puts "aquiiiiiiiiiiiiiiiiiiiiiiiiii2****************"
-          puts resource.inspect
-          reset_session
           render :json => {:result => :ko, :errors => resource.errors}
         }
       end

@@ -176,13 +176,11 @@ module Devise
         resource ||= resource_or_scope
         respond_to do |format|
           format.html {
-            puts "estoy aquiiiiiii 1111111111111********************"
             # solo se loga si es por web, por api no
             sign_in(scope, resource) unless warden.user(scope) == resource
             redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
           }
           format.json {
-            puts "estoy aquiiiiiii 2222222222222********************"
             #en la petición de login se quedaba logado después
             sign_out(scope)
             render :json => { :result => :ok }
