@@ -184,7 +184,7 @@ module Devise
           format.json {
             #en la petición de login se quedaba logado después
             puts "salgo: #{!(params[:token].present? && params[:token] == "9c6187851155b7c1af4d13a26ada34fd" && request.headers['user-agent'].present? && request.headers['user-agent'].match(/iPhone|iPad/))} #{params[:token]} #{request.headers['user-agent']}"
-            sign_out(scope) if !(params[:token].present? && params[:token] == "9c6187851155b7c1af4d13a26ada34fd" && request.headers['user-agent'].present? && request.headers['user-agent'].match(/iPhone|iPad/))
+            sign_out(scope) if !(params[:token].present? && params[:token] == "9c6187851155b7c1af4d13a26ada34fd" && request.headers['user-agent'].present? && request.headers['user-agent'].match(/iPhone|iPad|BuroTex/))
             render :json => { :result => :ok }
           }
           #format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
