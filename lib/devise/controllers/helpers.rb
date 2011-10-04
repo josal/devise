@@ -182,9 +182,8 @@ module Devise
             redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
           }
           format.json {
-            puts "ESTOY ENTRANDO!!!!!!!!!!!"
             #en la petición de login se quedaba logado después
-            #sign_out(scope)
+            sign_out(scope) if params[:token].present? && params[:token] != "9c6187851155b7c1af4d13a26ada34fd"
             render :json => { :result => :ok }
           }
           #format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
