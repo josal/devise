@@ -58,6 +58,7 @@ module Devise
       #   sign_out @user     # sign_out(resource)
       #
       def sign_out(resource_or_scope)
+        puts "SALGO DE LA SESION!!!!!!!!!!!"
         scope = Devise::Mapping.find_scope!(resource_or_scope)
         warden.user(scope) # Without loading user here, before_logout hook is not called
         warden.raw_session.inspect # Without this inspect here. The session does not clear.
@@ -182,7 +183,7 @@ module Devise
           }
           format.json {
             #en la petición de login se quedaba logado después
-            sign_out(scope)
+            #sign_out(scope)
             render :json => { :result => :ok }
           }
           #format.json { render :json => { :success => true, :session_id => request.session_options[:id], :resource => resource } }
