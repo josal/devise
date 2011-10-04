@@ -182,6 +182,7 @@ module Devise
             redirect_to stored_location_for(scope) || after_sign_in_path_for(resource)
           }
           format.json {
+            puts "ESTOY ENTRANDO!!!!!!!!!!!"
             #en la petición de login se quedaba logado después
             #sign_out(scope)
             render :json => { :result => :ok }
