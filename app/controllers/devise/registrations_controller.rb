@@ -63,7 +63,7 @@ class Devise::RegistrationsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to after_update_path_for(resource) }
         format.json {
-          sign_out(resource) if params[:token].present? && params[:token] != "9c6187851155b7c1af4d13a26ada34fd" && request.headers['user-agent'] && request.headers['user-agent'].match(/iPhone|iPad/)
+          sign_out(resource) if params[:token].present? && params[:token] != "9c6187851155b7c1af4d13a26ada34fd" && request.headers['user-agent'].present? && !request.headers['user-agent'].match(/iPhone|iPad/)
           render :json => { :result => :ok }
         }
       end
